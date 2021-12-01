@@ -31,11 +31,7 @@ fun comprobarTamano(){
 fun reverse(listaRev : List<String>): List<String> {
     val pila = Pila<String>(5)
     listaRev.forEach { pila.push(it) }
-    val listaRevIterator = listaRev.listIterator()
     val contra : MutableList<String> = mutableListOf()
-    while (listaRevIterator.hasNext()) listaRevIterator.next()
-    while (listaRevIterator.hasPrevious()) {
-        contra.add(listaRevIterator.previous())
-    }
+
     return contra
 }
