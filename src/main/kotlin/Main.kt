@@ -1,24 +1,24 @@
-class Pila(val tamanoMax : Int, val list: ArrayList<Any>){
-    init {
-        list.forEach { lista[lista.indexOfFirst { it == null }] = it }
-    }
-    private var lista= arrayOfNulls<Any>(tamanoMax)
-    fun tope(): Any? = lista.last { it != null }
-    fun push(anadir: String){
-        lista[lista.indexOfFirst { it == null }] = anadir
+class Pila<T>(val tamanoMax : Int, val list: List<T>){
+    private var lista: MutableList<T> = list as MutableList<T>
+    fun tope(): Any? = lista.last()
+    fun push(anadir: T){
+        if (lista.size < tamanoMax){
+            lista.add(lista.size,anadir)
+        }else
+            comprobarTamano()
     }
     fun pop(){
-        lista[lista.indexOfLast { it != null }] = null
+        lista.removeAt(lista.size - 1)
     }
-    fun vacia(): Boolean = lista.all { it == null } || lista.all { it != null }
+    fun vacia(): Boolean = lista.size == 0 || lista.size == tamanoMax
 
-    fun reverse(): List<Any> {
-        val listaRev : List<Any?> = lista.filterNotNull()
+    fun reverse(): List<T> {
+        val listaRev : List<T> = lista
         val listaRevIterator = listaRev.listIterator()
-        val contra : ArrayList<Any> = arrayListOf()
+        val contra : MutableList<T> = mutableListOf()
         while (listaRevIterator.hasNext()) listaRevIterator.next()
         while (listaRevIterator.hasPrevious()) {
-            contra.add("${listaRevIterator.previous()}")
+            contra.add(listaRevIterator.previous())
         }
         return contra
     }
@@ -26,11 +26,19 @@ class Pila(val tamanoMax : Int, val list: ArrayList<Any>){
 
 
 fun main() {
-    val numbers = Pila(4, arrayListOf("one", "two", "three", "four"))
+    val numbers = Pila(5, arrayListOf("one", "two", "three", "four"))
     val numbersRev = numbers.reverse()
     if (!listOf("four", "three", "two", "one").equals(numbersRev))
         println("Error")
-    else
+        else
         println("Correcto")
     println(numbersRev)
+    numbers.push("five")
+    println(numbers.list)
+    println(numbers.vacia())
+    numbers.pop()
+    println(numbers.list)
+}
+fun comprobarTamano(){
+    println("La lista ya tiene el tamaño máximo")
 }
